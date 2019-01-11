@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_081726) do
+ActiveRecord::Schema.define(version: 2019_01_11_021945) do
+
+  create_table "comments", force: :cascade do |t|
+    t.text "reply"
+    t.integer "meeting_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["meeting_id"], name: "index_comments_on_meeting_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
@@ -21,6 +31,16 @@ ActiveRecord::Schema.define(version: 2019_01_10_081726) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "meetings", force: :cascade do |t|
+    t.string "name"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,6 +54,11 @@ ActiveRecord::Schema.define(version: 2019_01_10_081726) do
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_id"
+    t.string "card_brand"
+    t.string "card_exp_month"
+    t.string "card_exp_year"
+    t.string "card_last4"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
